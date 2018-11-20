@@ -20,10 +20,11 @@ namespace test
             Console.WriteLine("Sum BMW engine capacity " + sumEngBmw);
             var sumHorseAudi = parkings.Sum(p => p.ClientList.Sum(c => c.OwnedCars.Where(oc => oc.Manufacturer == Manufacturer.Audi).Sum(z => z.Engine.HoursePower)));
             Console.WriteLine("Sum horsepower Audi " + sumHorseAudi);
-            var nameford = parkings.ToList(p => p.ClientList.Person.name.Where(oc => oc.Manufacturer == Manufacturer.Ford));
-            foreach (var f in nameford) { Console.WriteLine(f); }
-            var ageofsubaru = parkings.Sum(p => p.ClientList.Person.Age.Where(oc => oc.Manufacturer == Manufacturer.Subaru));
-            Console.WriteLine("Sum age of Subaru" + ageofsubaru);
+            var owners = (from p in parkings
+                          where p.ClientList.Where(c => c.OwnedCars.Where(oc => oc.Manufacturer == Manufacturer.Ford))
+                          select p.ClientList);
+
+
         }
     }
 
