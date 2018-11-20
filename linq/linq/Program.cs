@@ -13,15 +13,17 @@ namespace test
             var parkings = new List<Parking> { new Parking(), new Parking(), new Parking() };
 
             var sumCars = parkings.Sum(p => p.ClientList.Sum(c => c.OwnedCars.Count));
+            Console.WriteLine("Sum car " + sumCars);
             var sumEng = parkings.Sum(p => p.ClientList.Sum(c => c.OwnedCars.Sum(z => z.Engine.EngineCapacity)));
-            var sumEngBmw = parkings.Sum(p => p.ClientList.Sum(c => c.OwnedCars.Where(oc => oc.Manufacturer == Manufacturer.BMW).Sum(z => z.Engine.EngineCapacity)));
-            var sumHorseAudi = parkings.Sum(p => p.ClientList.Sum(c => c.OwnedCars.Where(oc => oc.Manufacturer == Manufacturer.Audi).Sum(z => z.Engine.HoursePower)));
-            var nameford = (from t in parkings
-                            where t.ToUpper().StartsWith("Б")
-                                 orderby t
-                                 select t).ToList<string>();
-            var nameford = parkings.ToList(p => p.ClientList.Person.name);
             Console.WriteLine("Sum engine capacity " + sumEng);
+            var sumEngBmw = parkings.Sum(p => p.ClientList.Sum(c => c.OwnedCars.Where(oc => oc.Manufacturer == Manufacturer.BMW).Sum(z => z.Engine.EngineCapacity)));
+            Console.WriteLine("Sum BMW engine capacity " + sumEngBmw);
+            var sumHorseAudi = parkings.Sum(p => p.ClientList.Sum(c => c.OwnedCars.Where(oc => oc.Manufacturer == Manufacturer.Audi).Sum(z => z.Engine.HoursePower)));
+            Console.WriteLine("Sum horsepower Audi " + sumHorseAudi);
+            var nameford = parkings.ToList(p => p.ClientList.Person.name.Where(oc => oc.Manufacturer == Manufacturer.Ford));
+            foreach (var f in nameford) { Console.WriteLine(f); }
+            var ageofsubaru = parkings.Sum(p => p.ClientList.Person.Age.Where(oc => oc.Manufacturer == Manufacturer.Subaru));
+            Console.WriteLine("Sum age of Subaru" + ageofsubaru);
         }
     }
 
