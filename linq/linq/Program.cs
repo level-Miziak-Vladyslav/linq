@@ -11,20 +11,31 @@ namespace test
         public static void Main(string[] args)
         {
             var parkings = new List<Parking> { new Parking(), new Parking(), new Parking() };
-
             var sumCars = parkings.Sum(p => p.ClientList.Sum(c => c.OwnedCars.Count));
-            Console.WriteLine("Sum car " + sumCars);
+            Console.WriteLine("1.       Sum car " + sumCars);
             var sumEng = parkings.Sum(p => p.ClientList.Sum(c => c.OwnedCars.Sum(z => z.Engine.EngineCapacity)));
-            Console.WriteLine("Sum engine capacity " + sumEng);
+            Console.WriteLine("2.       Sum engine capacity " + sumEng);
             var sumEngBmw = parkings.Sum(p => p.ClientList.Sum(c => c.OwnedCars.Where(oc => oc.Manufacturer == Manufacturer.BMW).Sum(z => z.Engine.EngineCapacity)));
-            Console.WriteLine("Sum BMW engine capacity " + sumEngBmw);
+            Console.WriteLine("3.       Sum BMW engine capacity " + sumEngBmw);
             var sumHorseAudi = parkings.Sum(p => p.ClientList.Sum(c => c.OwnedCars.Where(oc => oc.Manufacturer == Manufacturer.Audi).Sum(z => z.Engine.HoursePower)));
-            Console.WriteLine("Sum horsepower Audi " + sumHorseAudi);
-            var owners = (from p in parkings
-                          where p.ClientList.Where(c => c.OwnedCars.Where(oc => oc.Manufacturer == Manufacturer.Ford))
-                          select p.ClientList);
-
-
+            Console.WriteLine("4.       Sum horsepower Audi " + sumHorseAudi);
+            var audiCars2 = parkings.Select(p => p.ClientList.Where(cl => cl.OwnedCars.Any(oc => oc.Manufacturer == Manufacturer.Ford))).SelectMany(c => c).Select(p => p.Name);
+            var a = audiCars2.ToList();
+            Console.WriteLine("5.       Name Ford owners :");
+            foreach (string i in a)
+            {
+                Console.WriteLine(i);
+            }
+            var avAgeSub = parkings.Select(p => p.ClientList.Where(cl => cl.OwnedCars.Any(oc => oc.Manufacturer == Manufacturer.Subaru))).SelectMany(c => c).Select(p => p.Age);
+            var aS = avAgeSub.ToList();
+            int sumAge = 0;
+            int count = 0;
+            foreach (int i in aS)
+            {
+                sumAge = sumAge + i;
+                count++;
+            }
+            Console.WriteLine("6.       Average age of Subaru owners :" + sumAge/count);
         }
     }
 
